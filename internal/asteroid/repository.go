@@ -63,7 +63,7 @@ func (r *Repository) GetAll() []Asteroid {
 	asteroids := make([]Asteroid, 0, len(r.asteroids))	// Creamos un slice de asteroides, con capacidad igual
 														// a la longitud del mapa asteroids.
 	for _, asteroid := range r.asteroids {				// Iteramos sobre cada valor("_, "), en el mapa asteroids.
-		asteroids = append(asteoids, asteroid)			// Recorremos el mapa añadiendo cada asteroide al slice
+		asteroids = append(asteroids, asteroid)			// Recorremos el mapa añadiendo cada asteroide al slice
 	}
 	return asteroids
 }
@@ -77,8 +77,8 @@ func	(r *Repository) GetByID(id string) (Asteroid, error) {
 	r.mu.Lock()
 	defer	r.mu.Unlock()
 	asteroid, exists := r.asteroids[id]							// Buscamos el asteroide por su id.->True or false.
-	if !existis {
-		return Asteroid{}, error.New("asteroid not found")		// Devolvemos el asteroide vacío, y un error.
+	if !exists {
+		return Asteroid{}, errors.New("asteroid not found")		// Devolvemos el asteroide vacío, y un error.
 	}
 	return asteroid, nil										// Devolvermos el asteroide, y nil como error
 																// para indicar operacion exitosa.
@@ -90,8 +90,8 @@ func	(r *Repository) GetByID(id string) (Asteroid, error) {
 func	(r *Repository) Update(id string, asteroid Asteroid) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	_, exist := r.asteroid[id]
-	if !exist {
+	_, exists := r.asteroids[id]
+	if !exists {
 		return errors.New("asteroid not found")
 	}
 	r.asteroids[id] = asteroid
@@ -105,7 +105,7 @@ func	(r *Repository) Delete(id string) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	_, exists := r.asteroids[id]
-	if !exist {
+	if !exists {
 		return errors.New("asteroid not found")
 	}
 	delete(r.asteroids, id)
