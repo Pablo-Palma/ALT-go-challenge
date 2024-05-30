@@ -45,7 +45,7 @@ func	NewRepository(db *mongo.Database) *Repository {
 
 */
 func (r *Repository) Create(asteroid Asteroid) error {
-	asteroid.ID = primitive.NewObjectID().Hex()
+	asteroid.ID = primitive.NewObjectID()
 	_, err := r.collection.InsertOne(context.TODO(), asteroid)
 	return err
 }

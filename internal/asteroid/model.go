@@ -1,12 +1,14 @@
 package asteroid
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 type Asteroid struct {
-	ID					string		`json:"id"`
-	Name				string		`json:"name"`
-	Diameter			float64		`json:"diameter"`
-	DiscoveryDate		string		`json:"discovery_date"`
-	Observations		string		`json:"observations, omitempty"`
-	Distances			[]Distance	`json:"distances, omitempty"`
+	ID					primitive.ObjectID	`json:"id" bson:"_id,omitempty"`
+	Name				string				`json:"name"`
+	Diameter			float64				`json:"diameter"`
+	DiscoveryDate		string				`json:"discovery_date"`
+	Observations		string				`json:"observations, omitempty"`
+	Distances			[]Distance			`json:"distances, omitempty"`
 }
 
 type Distance struct {
