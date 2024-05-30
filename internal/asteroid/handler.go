@@ -16,6 +16,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Handler struct {
@@ -32,7 +33,13 @@ func	(h *Handler) CreateAsteroid(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	h.Repo.Create(asteroid)
+	asteroid.ID = primitive.NewObjectID()
+	insertID, err := h.Repo.Create(asteroid)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	asteroid.ID = insertID.(primitive.ObjectID)
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(asteroid)
 }

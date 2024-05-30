@@ -44,10 +44,13 @@ func	NewRepository(db *mongo.Database) *Repository {
 	ObjectID es el tipo que usa MongoDB com identificad único, lo convertimo a hexadecimal para hacerlo legible
 
 */
-func (r *Repository) Create(asteroid Asteroid) error {
+func (r *Repository) Create(asteroid Asteroid) (interface{}, error) {
 	asteroid.ID = primitive.NewObjectID()
-	_, err := r.collection.InsertOne(context.TODO(), asteroid)
-	return err
+	result, err := r.collection.InsertOne(context.TODO(), asteroid)
+	if err != nil {
+		return nil, err
+	}
+	return result.InsertedID, nil
 }
 
 /*
