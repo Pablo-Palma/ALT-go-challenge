@@ -5,9 +5,14 @@ package main
 	net/http para manejar solicictudes y respuestas HTTP.
 */
 import (
+	"context"
 	"log"
 	"net/http"
+	"time"
+
 	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"ALT-go-challenge/internal/asteroid"
 )
 
@@ -21,7 +26,24 @@ import (
 	log.Fatal registra cualquier error en el sever.
 */
 func main() {
-	repo := asteroid.NewRepository()
+	clientOptions := options.Client().ApplyURI("mongodb://mongodb:27017")
+	client, err := mongo.Connect(context.TODO(), clientOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	err = client.Ping(ctx, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Connected to MongoDB!")
+
+	db:= client.Database("asteroidsdb")
+	repo := asteroid.NewRepository(db)
 	handler := asteroid.NewHandler(repo)
 	r := mux.NewRouter()
 

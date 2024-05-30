@@ -1,114 +1,115 @@
 package asteroid
 
 /*
-	Importamos paquetes estandard de go para el manejo de errores y la gesrion de Mutex
-	(Mutual Exclusion), para evitar condiciones de carrera.
+	context		Manejo de calncelación y plazos de las operaciones.
+	errors		Manejo de errores.
+	bson		Manejar documentos BSON, formato que usa MongoDB para almacenar documentos.
+	primitive	Manejar tipos BSON primitivos, como ObjectID.
 */
 
 import (
 	"errors"
-	"sync"
+	"context"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 /*
-	Declaramos una variable de tipo sync.Mutex del paquete sync para sincronizar acceso a los datos.
-	y asteroids, una variable de tipo mapa, donde string(ID del asteroide) es la *KEY* y el *VALUE*
-	es de tipo Asteroide(estructura definida en /internal/model.go)
+	Declaramos la variable collection de tipo mongo.Collection, una estructura en el paquete "go.mongodb.org/mongo-driver/bson/mongo",
+	que proporciona métodos para realizar operaciones CRUD en esa colección.
 */
 type Repository struct {
-	mu			sync.Mutex
-	asteroids	map[string]Asteroid
+	collection *mongo.Collection
 }
 
 
 /*
-	La función crea y devuelve un puntero a Repository (una estructura de tipo Repository)
-	y además inicializa el campo asteroids con un mapa vacío.
-	make: se usa para crear mapas, slices y canales.acepta tres argumentos:
-		- tipo de estructura (slice, mapa, canal).
-		- Longitud inicial (opcional para mapas y canales).
-		- Capacidad (opcional para slices).
+	Creamos un nuevo repositorio, recibe una base de datos y asigna asteroidsi
+	Devolvemos un puntero al repositorio.
+	Dentro de la funcion asignamos la colección asteroids pasado como parámetro a collection del repositorio.
+
 */
-func	NewRepository() *Repository {
+func	NewRepository(db *mongo.Database) *Repository {
 	return	&Repository{
-		asteroids: make(map[string]Asteroid),
+		collection: db.Collection("asteroids"),
 	}
 }
 
 /*
 	CREATE
+	Método perteneciente al struct Repository y por tanto con permiso de acceso a sus campos y métodos.
+	Recibe un argumento, asteroid, y generamos un ID uúnico para el asteroide y lo convertimos en cadena.
+	ObjectID es el tipo que usa MongoDB com identificad único, lo convertimo a hexadecimal para hacerlo legible
 
-	Create es un método del tipo Repositroy (r *Repository), r es el receptor del método y un puntero a Repository.
-	En GO, un método de tipo "X", puede acceder y modificar variables de "X", siendo "X", una estructura.
-	defer: Retrasa la ejecución del Unlock(), hasta  que la función termine.
-
-	
 */
-func (r *Repository) Create(asteroid Asteroid) {
-	r.mu.Lock()									//Bloquear el mutex para acceso seguro.
-	defer	r.mu.Unlock()						//Desbloquear al final de la función.
-	r.asteroids[asteroid.ID] = asteroid			//Añade un asteroide al mapa, usando su `ID` como clave.
+func (r *Repository) Create(asteroid Asteroid) error {
+	asteroid.ID = primitive.NewObjectID().Hex()
+	_, err := r.collection.InsertOne(context.TODO(), asteroid)
+	return err
 }
 
 /*
 	GetAll
 
-	Devuelve un slice de Asteroid.
-		Slice: Secuencia dinámica de elementos del mismo tipo, Internamente es una referencia a un array.
-	En Go el for con range, puede devolver 2 valores: índice/valor, con "_, " ignoramos el índice.
+	Un cursor en MongoDB es un putero a los resultados de una consulta, perminte iterar sobre ellos de forma eficiente.
+	Cargamos todos los elementos en el slice asteroids
+
 */
-func (r *Repository) GetAll() []Asteroid {
-	r.mu.Lock()
-	defer	r.mu.Unlock()
-	asteroids := make([]Asteroid, 0, len(r.asteroids))	// Creamos un slice de asteroides, con capacidad igual
-														// a la longitud del mapa asteroids.
-	for _, asteroid := range r.asteroids {				// Iteramos sobre cada valor("_, "), en el mapa asteroids.
-		asteroids = append(asteroids, asteroid)			// Recorremos el mapa añadiendo cada asteroide al slice
+func (r *Repository) GetAll() ([]Asteroid, error) {
+	cursor, err := r.collection.Find(context.TODO(), bson.D{})
+	if err != nil {
+		return nil, err
 	}
-	return asteroids
+	var asteroids []Asteroid
+	if err = cursor.All(context.TODO(), &asteroids); err != nil {
+		return nil, err
+	}
+	return asteroids, nil
 }
 
 /*
 	GetByID
 
-	Toma un string que representa el id, devuleve Asteroid si lo encuentra o un error.
 */
 func	(r *Repository) GetByID(id string) (Asteroid, error) {
-	r.mu.Lock()
-	defer	r.mu.Unlock()
-	asteroid, exists := r.asteroids[id]							// Buscamos el asteroide por su id.->True or false.
-	if !exists {
-		return Asteroid{}, errors.New("asteroid not found")		// Devolvemos el asteroide vacío, y un error.
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return Asteroid{}, err
 	}
-	return asteroid, nil										// Devolvermos el asteroide, y nil como error
-																// para indicar operacion exitosa.
+	var asteroid Asteroid
+	err = r.collection.FindOne(context.TODO(), bson.M{"_id": oid}).Decode(&asteroid)
+	if err != nil {
+		return Asteroid{}, errors.New("asteroid not foud")
+	}
+	return asteroid, nil
 }
 
 /*
 	UPDATE
 */
 func	(r *Repository) Update(id string, asteroid Asteroid) error {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-	_, exists := r.asteroids[id]
-	if !exists {
-		return errors.New("asteroid not found")
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
 	}
-	r.asteroids[id] = asteroid
-	return nil
+	update := bson.M{
+		"$set": asteroid,
+	}
+	_, err = r.collection.UpdateOne(context.TODO(), bson.M{"_id": oid}, update)
+	return err
 }
 
 /*
 	DELETE
 */
 func	(r *Repository) Delete(id string) error {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-	_, exists := r.asteroids[id]
-	if !exists {
-		return errors.New("asteroid not found")
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
 	}
-	delete(r.asteroids, id)
-	return nil
+	_, err = r.collection.DeleteOne(context.TODO(), bson.M{"_id": oid})
+	return err
 }
 
