@@ -72,6 +72,10 @@ func	(h *Handler) UpdateAsteroid(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	if _, err := h.Repo.GetByID(id); err != nil {
+		http.Error(w, "Asteroid not found", http.StatusNotFound)
+		return
+	}
 	if err:= h.Repo.Update(id, asteroid); err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
@@ -82,6 +86,10 @@ func	(h *Handler) UpdateAsteroid(w http.ResponseWriter, r *http.Request) {
 
 func	(h *Handler) DeleteAsteroid(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
+	if _, err := h.Repo.GetByID(id); err != nil {
+		http.Error(w, "Asteroid not found", http.StatusNotFound)
+		return
+	}
 	if err := h.Repo.Delete(id); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

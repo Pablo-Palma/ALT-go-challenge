@@ -106,13 +106,17 @@ func	(r *Repository) Update(id string, asteroid Asteroid) error {
 
 /*
 	DELETE
+	Convertimos el id a ObjectID, tipo utilizado por MongoDB, para sus id únicos
 */
 func	(r *Repository) Delete(id string) error {
 	oid, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return err
 	}
-	_, err = r.collection.DeleteOne(context.TODO(), bson.M{"_id": oid})
-	return err
+	result, err := r.collection.DeleteOne(context.TODO(), bson.M{"_id": oid})
+	if result.DeletedCount == 0 {
+		return errors.New("asteroid not found")
+	}
+	return nil
 }
 
