@@ -5,6 +5,9 @@ go 1.22.3
 require (
 	github.com/gorilla/mux v1.8.1
 	go.mongodb.org/mongo-driver v1.15.0
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/go-chi/chi/v5 v5.0.7
+	golang.org/x/crypto v0.17.0
 )
 
 require (

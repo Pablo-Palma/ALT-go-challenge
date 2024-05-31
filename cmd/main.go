@@ -14,6 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"ALT-go-challenge/internal/asteroid"
+	"ALT-go-challenge/internal/auth"
 )
 
 /*
@@ -22,7 +23,7 @@ import (
 		- El enrutador (r) es una estructura que gestiona cómo se manejan las solicitudes HTTP entrantes.
 		- HandleFunc es un método enrutador que define una ruta y la asocia con un método del handler.
 		- Methods especifica el método HTTP(POST, GET, PATCH, DELETE)
-	Inicilizamos el sevidor, con htt.ListenAndServer( en el puerto 8080).
+	Inicilizamos el sevidor, con http.ListenAndServer( en el puerto 8080).
 	log.Fatal registra cualquier error en el sever.
 */
 func main() {
@@ -45,13 +46,26 @@ func main() {
 	db:= client.Database("asteroidsdb")
 	repo := asteroid.NewRepository(db)
 	handler := asteroid.NewHandler(repo)
+
+	userRepo := auth.NewUserRepository(db)
+	auth.InitializeUserRepo(userRepo)
+
 	r := mux.NewRouter()
+
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("API  de Registro de Asteroides en funcionamiento"))
+	})
 
 	r.HandleFunc("/api/v1/asteroides", handler.CreateAsteroid).Methods("POST")
 	r.HandleFunc("/api/v1/asteroides", handler.GetAllAsteroids).Methods("GET")
 	r.HandleFunc("/api/v1/asteroides/{id}", handler.GetAsteroidByID).Methods("GET")
 	r.HandleFunc("/api/v1/asteroides/{id}", handler.UpdateAsteroid).Methods("PATCH")
 	r.HandleFunc("/api/v1/asteroides/{id}", handler.DeleteAsteroid).Methods("DELETE")
+
+	r.HandleFunc("/register", auth.Register).Methods("POST")
+	r.HandleFunc("/login", auth.Login).Methods("POST")
+	r.Handle("/protected", auth.AuthMiddleware(http.HandlerFunc(auth.ProtectedEndpoint))).Methods("GET")
 
 	log.Println("Server running on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
