@@ -57,12 +57,16 @@ func main() {
 		w.Write([]byte("API  de Registro de Asteroides en funcionamiento"))
 	})
 
-	r.HandleFunc("/api/v1/asteroides", handler.CreateAsteroid).Methods("POST")
+	// Rutas públicas
 	r.HandleFunc("/api/v1/asteroides", handler.GetAllAsteroids).Methods("GET")
 	r.HandleFunc("/api/v1/asteroides/{id}", handler.GetAsteroidByID).Methods("GET")
-	r.HandleFunc("/api/v1/asteroides/{id}", handler.UpdateAsteroid).Methods("PATCH")
-	r.HandleFunc("/api/v1/asteroides/{id}", handler.DeleteAsteroid).Methods("DELETE")
 
+	//Rutas protegidas
+	r.Handle("/api/v1/asteroides", auth.AuthMiddleware(http.HandlerFunc(handler.CreateAsteroid))).Methods("POST")
+	r.Handle("/api/v1/asteroides/{id}", auth.AuthMiddleware(http.HandlerFunc(handler.UpdateAsteroid))).Methods("PATCH")
+	r.Handle("/api/v1/asteroides/{id}", auth.AuthMiddleware(http.HandlerFunc(handler.DeleteAsteroid))).Methods("DELETE")
+
+	//Rutas de autenticación
 	r.HandleFunc("/register", auth.Register).Methods("POST")
 	r.HandleFunc("/login", auth.Login).Methods("POST")
 	r.Handle("/protected", auth.AuthMiddleware(http.HandlerFunc(auth.ProtectedEndpoint))).Methods("GET")
