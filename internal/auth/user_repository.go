@@ -38,3 +38,14 @@ func (repo *UserRepository) GetByUsername(username string) (User, error) {
 	}
 	return user, nil
 }
+
+func (repo *UserRepository) DeleteByUsername(username string) error {
+	_, err := repo.db.DeleteOne(context.Background(), bson.M{"username": username})
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return errors.New("user not found")
+		}
+		return err
+	}
+	return nil
+}

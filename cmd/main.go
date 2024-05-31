@@ -66,6 +66,7 @@ func main() {
 	r.HandleFunc("/register", auth.Register).Methods("POST")
 	r.HandleFunc("/login", auth.Login).Methods("POST")
 	r.Handle("/protected", auth.AuthMiddleware(http.HandlerFunc(auth.ProtectedEndpoint))).Methods("GET")
+	r.Handle("/deleteuser", auth.AuthMiddleware(http.HandlerFunc(auth.DeleteUser))).Methods("DELETE")
 
 	log.Println("Server running on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", r))

@@ -93,3 +93,18 @@ func ProtectedEndpoint(w http.ResponseWriter, r *http.Request) {
 	username := r.Context().Value("username").(string)
 	w.Write([]byte("Hello, " + username))
 }
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	username := r.URL.Query().Get("username")
+	if username == "" {
+		http.Error(w, "Username is required", http.StatusBadRequest)
+		return
+	}
+	err := userRepo.DeleteByUsername(username)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("User deleted successfully"))
+}
