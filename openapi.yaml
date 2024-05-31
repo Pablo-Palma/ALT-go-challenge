@@ -1,0 +1,125 @@
+openapi: 3.0.0
+info:
+  title: API de Registro de Asteroides
+  version: 1.0.0
+  description: API para registrar y monitorizar asteroides potencialmente peligrosos.
+servers:
+  - url: http://localhost:8080/api/v1
+paths:
+  /asteroides:
+    post:
+      summary: Crear asteroide
+      operationId: createAsteroid
+      requestBody:
+        description: Información del asteroide
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Asteroid'
+      responses:
+        '200':
+          description: Asteroide creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asteroid'
+    get:
+      summary: Obtener todos los asteroides
+      operationId: getAsteroids
+      responses:
+        '200':
+          description: Lista de asteroides
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asteroid'
+  /asteroides/{id}:
+    get:
+      summary: Obtener asteroide por ID
+      operationId: getAsteroidById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Información del asteroide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asteroid'
+    patch:
+      summary: Actualizar asteroide
+      operationId: updateAsteroid
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Información actualizada del asteroide
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Asteroid'
+      responses:
+        '200':
+          description: Asteroide actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asteroid'
+    delete:
+      summary: Eliminar asteroide
+      operationId: deleteAsteroid
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Asteroide eliminado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Asteroide eliminado exitosamente
+components:
+  schemas:
+    Asteroid:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        diameter:
+          type: number
+        discovery_date:
+          type: string
+          format: date
+        observations:
+          type: string
+        distances:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+              distance:
+                type: number
+
