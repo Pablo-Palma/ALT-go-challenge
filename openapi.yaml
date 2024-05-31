@@ -9,6 +9,8 @@ paths:
   /asteroides:
     post:
       summary: Crear asteroide
+      security:
+        - bearerAuth: []
       operationId: createAsteroid
       requestBody:
         description: Información del asteroide
@@ -55,6 +57,8 @@ paths:
                 $ref: '#/components/schemas/Asteroid'
     patch:
       summary: Actualizar asteroide
+      security:
+        - bearerAuth: []
       operationId: updateAsteroid
       parameters:
         - name: id
@@ -78,6 +82,8 @@ paths:
                 $ref: '#/components/schemas/Asteroid'
     delete:
       summary: Eliminar asteroide
+      security:
+        - bearerAuth: []
       operationId: deleteAsteroid
       parameters:
         - name: id
@@ -96,7 +102,50 @@ paths:
                   message:
                     type: string
                     example: Asteroide eliminado exitosamente
+  /register:
+    post:
+      summary: Registrar usuario
+      operationId: registerUser
+      requestBody:
+        description: Información del usuario
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Usuario registrado
+  /login:
+    post:
+      summary: Iniciar sesión
+      operationId: loginUser
+      requestBody:
+        description: Credenciales del usuario
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Sesión iniciada
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
   schemas:
     Asteroid:
       type: object

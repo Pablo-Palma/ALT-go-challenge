@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"time"
+	"strings"
 )
 
 var userRepo *UserRepository
@@ -72,15 +73,21 @@ func Login(w http.ResponseWriter, r *http.Request) {
 */
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var tokenStr string
 		cookie, err := r.Cookie("token")
-		if err != nil {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			return
+		if err == nil {
+			tokenStr = cookie.Value
+		} else {
+			authHeader := r.Header.Get("Authorization")
+			if authHeader == "" {
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				return
+			}
+			tokenStr = strings.TrimPrefix(authHeader, "Bearer ")
 		}
 
-		tokenStr := cookie.Value
 		claims, err := VerifyJWT(tokenStr)
-		if err != nil {
+		if err != nil{
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}

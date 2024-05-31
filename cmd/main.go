@@ -3,6 +3,8 @@ package main
 /*
 	log para registrar  mensajes en la consola
 	net/http para manejar solicictudes y respuestas HTTP.
+	gorilla/handlers nos permite habilitar un middleware CORS(Cross Origin Resource Sharing)
+	para conectar SwaggerUI a nuestra app, y así poder hacer peticiones.
 */
 import (
 	"context"
@@ -10,6 +12,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -72,6 +75,12 @@ func main() {
 	r.Handle("/protected", auth.AuthMiddleware(http.HandlerFunc(auth.ProtectedEndpoint))).Methods("GET")
 	r.Handle("/deleteuser", auth.AuthMiddleware(http.HandlerFunc(auth.DeleteUser))).Methods("DELETE")
 
+	corsHandler := handlers.CORS(
+		handlers.AllowedOrigins([]string{"*"}),
+		handlers.AllowedMethods([]string{"GET", "POST", "PATHC", "DELETE"}),
+		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
+	)
+
 	log.Println("Server running on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":8080", corsHandler(r)))
 }
