@@ -77,7 +77,7 @@ func main() {
 
 	corsHandler := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
-		handlers.AllowedMethods([]string{"GET", "POST", "PATHC", "DELETE"}),
+		handlers.AllowedMethods([]string{"GET", "POST", "PATCH", "DELETE"}),
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)
 

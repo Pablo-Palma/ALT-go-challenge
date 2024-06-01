@@ -5,6 +5,7 @@ package asteroid
 	errors		Manejo de errores.
 	bson		Manejar documentos BSON, formato que usa MongoDB para almacenar documentos.
 	primitive	Manejar tipos BSON primitivos, como ObjectID.
+	options		Configurar opciones de consulta
 */
 
 import (
@@ -14,6 +15,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 /*
@@ -67,6 +69,37 @@ func (r *Repository) GetAll() ([]Asteroid, error) {
 	}
 	var asteroids []Asteroid
 	if err = cursor.All(context.TODO(), &asteroids); err != nil {
+		return nil, err
+	}
+	return asteroids, nil
+}
+
+/*
+	GetAsteroids
+
+
+*/
+func (r *Repository) GetAsteroids(ctx context.Context, filter bson.M, limit int, skip int) ([]Asteroid, error) {
+	collection := r.collection
+
+	findOptions := options.Find()
+	findOptions.SetLimit(int64(limit))
+	findOptions.SetSkip(int64(skip))
+
+	cursor, err := collection.Find(ctx, filter, findOptions)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+	var asteroids []Asteroid
+	for cursor.Next(ctx) {
+		var asteroid Asteroid
+		if err := cursor.Decode(&asteroid); err != nil {
+			return nil, err
+		} 
+		asteroids = append(asteroids, asteroid)
+	}
+	if err := cursor.Err(); err != nil {
 		return nil, err
 	}
 	return asteroids, nil

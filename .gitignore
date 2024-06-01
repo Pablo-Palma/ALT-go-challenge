@@ -33,3 +33,6 @@ Thumbs.db
 # Ignore go.sum 
 go.sum
 
+# Ignore cookies
+cookies.txt
+

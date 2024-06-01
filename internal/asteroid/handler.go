@@ -10,13 +10,17 @@ package	asteroid
 	"mux": Enrutador HTTP.
 		-mux.NewRouter()	Crea Enrutador.
 		-mux.Vars(r)		Obtiene las variables de ruta como parámetros en la URL
+	"strconv"	Convertir parámetros de consulta de string a int
+	"bson"		Construir consultas BSON
 */
 
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type Handler struct {
@@ -49,12 +53,33 @@ func	(h *Handler) CreateAsteroid(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetAllAsteroids(w http.ResponseWriter, r *http.Request) {
-	asteroids, err := h.Repo.GetAll()
+	pageStr := r.URL.Query().Get("page")
+	limitStr := r.URL.Query().Get("limit")
+	nameFilter := r.URL.Query().Get("name")
+
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page < 1 {
+		page = 1
+	}
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil || limit < 1 {
+		limit = 10
+	}
+
+	skip := (page - 1) * limit
+
+	filter := bson.M{}
+	if nameFilter != "" {
+		filter["name"] = bson.M{"$regex": nameFilter, "$options": "i"}
+	}
+
+	asteroids, err := h.Repo.GetAsteroids(r.Context(), filter, limit, skip)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Failed to retrive asteroids", http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(asteroids)
 }
 
