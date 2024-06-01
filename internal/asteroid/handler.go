@@ -33,6 +33,10 @@ func	(h *Handler) CreateAsteroid(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	if err:= ValidateAsteroid(&asteroid); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 	asteroid.ID = primitive.NewObjectID()
 	insertID, err := h.Repo.Create(asteroid)
 	if err != nil {
@@ -69,6 +73,10 @@ func	(h *Handler) UpdateAsteroid(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	var	asteroid Asteroid
 	if err := json.NewDecoder(r.Body).Decode(&asteroid); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	if err := ValidateAsteroid(&asteroid); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
