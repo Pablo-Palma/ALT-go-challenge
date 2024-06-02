@@ -1,17 +1,17 @@
 package main
 
 /*
-	log para registrar  mensajes en la consola
-	net/http para manejar solicictudes y respuestas HTTP.
-	gorilla/handlers nos permite habilitar un middleware CORS(Cross Origin Resource Sharing)
+	logrus				para registrar  mensajes en la consola
+	net/http 			para manejar solicictudes y respuestas HTTP.
+	gorilla/handlers 	nos permite habilitar un middleware CORS(Cross Origin Resource Sharing)
 	para conectar SwaggerUI a nuestra app, y así poder hacer peticiones.
 */
 import (
 	"context"
-	"log"
 	"net/http"
 	"time"
 
+	"github.com/sirupsen/logrus"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -30,10 +30,13 @@ import (
 	log.Fatal registra cualquier error en el sever.
 */
 func main() {
+	logrus.SetFormatter(&logrus.JSONFormatter{})
+	logrus.SetLevel(logrus.InfoLevel)
+	logrus.Info("Starting the application")
 	clientOptions := options.Client().ApplyURI("mongodb://mongodb:27017")
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -41,10 +44,10 @@ func main() {
 
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 
-	log.Println("Connected to MongoDB!")
+	logrus.Info("Connected to MongoDB!")
 
 	db:= client.Database("asteroidsdb")
 	repo := asteroid.NewRepository(db)
@@ -81,6 +84,6 @@ func main() {
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)
 
-	log.Println("Server running on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", corsHandler(r)))
+	logrus.Info("Server running on port 8080")
+	logrus.Fatal(http.ListenAndServe(":8080", corsHandler(r)))
 }

@@ -103,3 +103,41 @@ Para ejecutar MongoDB en un contenedor Docker:
    mongosh "mongodb://localhost:27017"
    use asteroidsdb
    ```
+
+### Comandos para Verificar la Base de Datos y Colecciones
+
+1. **Acceder a MongoDB en el contenedor Docker**:
+
+   ```sh
+   docker exec -it mongodb mongosh
+   ```
+
+2. **Mostrar todas las bases de datos**:
+
+   ```sh
+   show dbs
+   ```
+
+3. **Seleccionar la base de datos `asteroidsdb`**:
+
+   ```sh
+   use asteroidsdb
+   ```
+
+4. **Mostrar todas las colecciones en `asteroidsdb`**:
+
+   ```sh
+   show collections
+   ```
+
+5. **Listar documentos en la colección `asteroids`**:
+
+   ```sh
+   db.asteroids.find().pretty()
+   ```
+
+6. **Listar documentos en la colección `users`**:
+
+   ```sh
+   db.users.find().pretty()
+   ```
