@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sirupsen/logrus"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -77,6 +78,8 @@ func main() {
 	r.HandleFunc("/login", auth.Login).Methods("POST")
 	r.Handle("/protected", auth.AuthMiddleware(http.HandlerFunc(auth.ProtectedEndpoint))).Methods("GET")
 	r.Handle("/deleteuser", auth.AuthMiddleware(http.HandlerFunc(auth.DeleteUser))).Methods("DELETE")
+
+	r.Handle("/metrics", promhttp.Handler())
 
 	corsHandler := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
