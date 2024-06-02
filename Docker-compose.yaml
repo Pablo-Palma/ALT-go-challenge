@@ -19,6 +19,16 @@ services:
    - MONGO_URI=mongodb://mongodb:27017/asteroidsdb
   depends_on:
    - mongodb
+
+ prometheus:
+  image: prom/prometheus
+  container_name: prometheus
+  ports:
+   - "9090:9090"
+  volumes:
+   - ./prometheus:/etc/prometheus
+  command:
+   - '--config.file=/etc/prometheus/prometheus.yml'
   
 volumes:
  mongo-data:
