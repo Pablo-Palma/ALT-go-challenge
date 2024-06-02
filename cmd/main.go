@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/sirupsen/logrus"
 	"github.com/gorilla/handlers"
@@ -20,6 +21,20 @@ import (
 	"ALT-go-challenge/internal/asteroid"
 	"ALT-go-challenge/internal/auth"
 )
+
+var (
+	httpRequestsTotal = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "http_requests_total",
+			Help: "Total number of HTTP requests",
+		},
+		[]string{"method", "endpoint"},
+	)
+)
+
+func init() {
+	prometheus.MustRegister(httpRequestsTotal)
+}
 
 /*
 	Creamos una nueva instancia del repo, del handler(recibe el repo).
@@ -59,6 +74,8 @@ func main() {
 
 	r := mux.NewRouter()
 
+	r.Use(prometheusMiddleware)
+
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("API  de Registro de Asteroides en funcionamiento"))
@@ -88,5 +105,15 @@ func main() {
 	)
 
 	logrus.Info("Server running on port 8080")
+	logrus.Info("Access the application at: http://localhost:8080/")
+	logrus.Info("Access Prometheus at: http://localhost:9090/")
+	logrus.Info("Access Grafana at: http://localhost:3000/")
 	logrus.Fatal(http.ListenAndServe(":8080", corsHandler(r)))
+}
+
+func prometheusMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		httpRequestsTotal.WithLabelValues(r.Method, r.URL.Path).Inc()
+		next.ServeHTTP(w, r)
+	})
 }
