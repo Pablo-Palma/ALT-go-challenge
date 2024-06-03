@@ -43,7 +43,7 @@ Abre Grafana en tu navegador web en `http://localhost:3000` y accede con las cre
 - **Total de Solicitudes HTTP por Endpoint:**
   - **Query:**
     ```promql
-    sum by (endpoint) (http_requests_total)
+	sum by (endpoint) (rate(http_requests_total[1m]))
     ```
   - **Tipo de Visualización:** Bar chart
 
@@ -57,7 +57,7 @@ Abre Grafana en tu navegador web en `http://localhost:3000` y accede con las cre
 - **Número Total de Solicitudes HTTP Agrupadas por Método:**
   - **Query:**
     ```promql
-    sum by (method) (http_requests_total)
+	sum by (method) (rate(http_requests_total[1m]))
     ```
   - **Tipo de Visualización:** Bar chart
 
