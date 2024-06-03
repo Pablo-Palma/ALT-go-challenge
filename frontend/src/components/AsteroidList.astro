@@ -1,0 +1,23 @@
+---
+import AsteroidBox from './AsteroidBox.astro';
+
+const isServer = import.meta.env.SSR;
+const baseUrl = isServer ? 'http://localhost:8080' : '';
+const asteroids = await fetch(`${baseUrl}/api/v1/asteroides`).then(res => res.json());
+---
+
+<ul class="asteroid-list">
+  {asteroids.map(asteroid => (
+    <li key={asteroid.id}>
+      <AsteroidBox asteroid={asteroid} />
+    </li>
+  ))}
+</ul>
+
+<style>
+  .asteroid-list {
+    list-style: none;
+    padding: 0;
+  }
+</style>
+

@@ -1,0 +1,35 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AsteroidList from '../components/AsteroidList.astro';
+---
+
+<Layout title="Explore Asteroids">
+  <main>
+    <h1><span class="text-gradient">Asteroids</span> List</h1>
+    <AsteroidList />
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 3.5rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+</style>
+
