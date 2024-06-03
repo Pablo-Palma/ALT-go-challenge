@@ -1,51 +1,83 @@
 ---
+import Button from './Button.astro';
+
 const { asteroid } = Astro.props;
 const { id, name, diameter, discovery_date, observations, distances } = asteroid;
+
+const handleDelete = async (event) => {
+  event.stopPropagation(); // Evitar que el evento onClick se propague al contenedor
+  console.log('Deleting asteroid with ID:', id);  // Log para depurar
+  try {
+    const response = await fetch(`/api/v1/asteroides/${id}`, {
+      method: 'DELETE',
+      credentials: 'include'
+    });
+
+    if (response.ok) {
+      alert('Asteroid deleted successfully');
+      window.location.reload(); // Recargar la página para reflejar los cambios
+    } else {
+      const errorData = await response.json();
+      alert(`Failed to delete the asteroid: ${errorData.message}`);
+    }
+  } catch (error) {
+    alert(`An error occurred: ${error.message}`);
+  }
+};
 ---
 
-<div class="asteroid-box" onclick="this.classList.toggle('expanded')">
-  <div class="header">
-    <div class="section">
-      <p><strong>ID:</strong> {id}</p>
-    </div>
-    <div class="vertical-divider"></div>
-    <div class="section">
-      <p><strong>Name:</strong> {name}</p>
-    </div>
-  </div>
-  <div class="horizontal-divider"></div>
-  <div class="details">
-    <p><strong>Diameter:</strong> {diameter} km</p>
-    <p><strong>Discovery Date:</strong> {discovery_date}</p>
-    <p><strong>Observations:</strong> {observations}</p>
-    {distances.length > 0 && (
-      <div>
-        <strong>Distances:</strong>
-        <ul>
-          {distances.map((distance, index) => (
-            <li key={index}>{distance.date}: {distance.distance} AU</li>
-          ))}
-        </ul>
+<div class="asteroid-box-container">
+  <div class="asteroid-box" onclick="this.classList.toggle('expanded')">
+    <div class="header">
+      <div class="section">
+        <p><strong>ID:</strong> {id}</p>
       </div>
-    )}
+      <div class="vertical-divider"></div>
+      <div class="section">
+        <p><strong>Name:</strong> {name}</p>
+      </div>
+    </div>
+    <div class="horizontal-divider"></div>
+    <div class="details">
+      <p><strong>Diameter:</strong> {diameter} km</p>
+      <p><strong>Discovery Date:</strong> {discovery_date}</p>
+      <p><strong>Observations:</strong> {observations}</p>
+      {distances.length > 0 && (
+        <div>
+          <strong>Distances:</strong>
+          <ul>
+            {distances.map((distance, index) => (
+              <li key={index}>{distance.date}: {distance.distance} AU</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
   </div>
+  <Button content="Delete" onClick={handleDelete} size="small" href="#" class="delete-button" />
 </div>
 
 <style>
+  .asteroid-box-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
   .asteroid-box {
     background: linear-gradient(#051633, #051633) padding-box,
-      linear-gradient(to right, rgba(27, 212, 237, 0.7), rgb(23, 56, 114)) border-box;
+    linear-gradient(to right, rgba(27, 212, 237, 0.7), rgb(23, 56, 114)) border-box;
     padding: 15px;
     border-radius: 15px;
     border: 3px solid transparent;
     font-size: 18px;
     transition: all 0.1s ease-out;
-    margin-bottom: 10px;
     color: white;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-grow: 1;
   }
 
   .header {
@@ -103,6 +135,10 @@ const { id, name, diameter, discovery_date, observations, distances } = asteroid
 
   .asteroid-box:hover {
     box-shadow: 0 0 25px rgba(27, 212, 237, 0.7);
+  }
+
+  .delete-button {
+    margin-left: 10px;
   }
 
   @media (max-width: 600px) {

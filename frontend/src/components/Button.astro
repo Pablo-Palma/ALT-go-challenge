@@ -1,8 +1,8 @@
 ---
-const { content, href } = Astro.props;
+const { content, href, onClick, size } = Astro.props;
 ---
 
-<a href={href} class="button">
+<a href={href} class={`button ${size}`} onClick={onClick}>
   {content}
 </a>
 
@@ -20,6 +20,11 @@ const { content, href } = Astro.props;
     color: white;
     text-decoration: none;
     font-family: inherit;
+  }
+
+  .button.small {
+    padding: 5px 10px;
+    font-size: 16px;
   }
 
   .button:hover {
