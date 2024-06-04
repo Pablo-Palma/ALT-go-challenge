@@ -232,6 +232,33 @@ type Asteroid struct {
 
 ## Documentación Auth
 
+### Uso de Tokens y Cookies:
+Tu implementación permite el uso de tokens tanto en cookies como en el encabezado de autorización. Aquí está el flujo detallado de cómo funciona:
+
+1. **Login y Set-Cookie**:
+    - Después de un inicio de sesión exitoso, el token JWT se envía al cliente en una cookie HTTP.
+    - Ejemplo:
+      ```go
+      http.SetCookie(w, &http.Cookie{
+          Name:    "token",
+          Value:   token,
+          Expires: time.Now().Add(24 * time.Hour),
+      })
+      ```
+
+2. **Auth Middleware**:
+    - Este middleware intercepta las solicitudes a los endpoints protegidos.
+    - Busca el token JWT en las cookies o en el encabezado de autorización.
+    - Si el token es válido, extrae el nombre de usuario de las reclamaciones (`claims`) y lo almacena en el contexto de la solicitud.
+
+
+### Resumen:
+- **Autenticación**: Se realiza mediante nombres de usuario y contraseñas, verificadas con `bcrypt`. Si es correcta, se genera un token JWT.
+- **Autorización**: Se realiza mediante el middleware que verifica el token JWT en cada solicitud protegida.
+- **Uso de Tokens**: Los tokens JWT se pueden pasar en cookies o en el encabezado de autorización.
+
+Este enfoque proporciona flexibilidad en la forma en que los clientes pueden enviar tokens, y garantiza que solo los usuarios autenticados puedan acceder a los recursos protegidos.
+
 ## Headers HTTP
 
 ### ¿Qué es un Encabezado HTTP?
