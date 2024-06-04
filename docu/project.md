@@ -80,7 +80,7 @@ Nuestra API almacena los datos tanto de los usuarios como de los objetos en una 
 └── go.mod
 ```
 
-## Organización del README
+# Documentación
 
 <details>
 <summary><strong>1. Descripción del Proyecto</strong></summary>
@@ -91,8 +91,10 @@ Nuestra API almacena los datos tanto de los usuarios como de los objetos en una 
 
 </details>
 
+## Implementación de la Aplicación en Go
+
 <details>
-<summary><strong>2. Implementación de la Aplicación en Go</strong></summary>
+<summary><strong>2. Asteroids </strong></summary>
 
 ### 1. Estructura:
 
@@ -162,7 +164,14 @@ type Asteroid struct {
 </details>
 
 <details>
-<summary><strong>3. Base de Datos</strong></summary>
+<summary><strong>3. Autenticación y Autorización </strong></summary>
+
+</details>
+
+## Base de datos
+
+<details>
+<summary><strong>4. Mongodb </strong></summary>
 
   ### ¿Qué es MongoDB?
 
@@ -259,13 +268,6 @@ MongoDB es una base de datos NoSQL de código abierto, orientada a documentos, q
    ```sh
    db.users.find().pretty()
    ```
-
-</details>
-
-<details>
-<summary><strong>4. Autenticación y Autorización</strong></summary>
-
-- Protege tu API
 
 </details>
 
