@@ -16,14 +16,14 @@ Nuestra API almacena los datos tanto de los usuarios como de los objetos en una 
 
 ### Funciones adicionales:
 
-* Paginación y filtros.
-* Sistema de autenticación y autorización para controlar el acceso a la API.
-* Validación de entrada de datos para evitar errores y datos incorrectos.
-* Monitoring: Uso de herramientas de trazas, logging y Monitorizacion de codigos de estado.
-* Documentación: Hemos empleado OpenApi para describir, producir, consumir y visualizar servicios web RESTful.
-* GitHub como repositorio de almacenamiento y control de versiones.
-* Testing: Hemos incluido test unitarios, tanto en go como postman
-* Frontend.
+* **Paginación y filtros**.
+* **Sistema de autenticación y autorización** para controlar el acceso a la API.
+* **Validación de entrada de datos** para evitar errores y datos incorrectos.
+* **Monitoring:** Uso de herramientas de trazas, logging y Monitorizacion de codigos de estado.
+* **Documentación:** Hemos empleado OpenApi para describir, producir, consumir y visualizar servicios web RESTful.
+* **GitHub** como repositorio de almacenamiento y control de versiones.
+* **Testing:** Hemos incluido test unitarios, tanto en go como postman.
+* **Frontend.** Usamos Astro para renderizar la aplicación en el navegador.
 
 ### Tecnologías Utilizadas
 
@@ -164,8 +164,101 @@ type Asteroid struct {
 <details>
 <summary><strong>3. Base de Datos</strong></summary>
 
-- MongoDB
-- Documentación Relevante
+  ### ¿Qué es MongoDB?
+
+MongoDB es una base de datos NoSQL de código abierto, orientada a documentos, que almacena datos en formato BSON (Binary JSON). A diferencia de las bases de datos relacionales que usan tablas y filas, MongoDB usa colecciones y documentos, permitiendo una estructura de datos más flexible y escalable.
+
+### Beneficios de Usar MongoDB
+
+1. **Flexibilidad**: Permite almacenar datos en un formato JSON-like, lo que facilita la manipulación y consulta de datos complejos.
+2. **Escalabilidad**: Soporta escalado horizontal a través de sharding, lo que permite manejar grandes volúmenes de datos y tráfico.
+3. **Alta Disponibilidad**: Ofrece replicación automática y recuperación ante fallos con configuraciones de replica sets.
+4. **Rendimiento**: Optimizado para manejar grandes cantidades de datos y operaciones de lectura/escritura de forma eficiente.
+5. **Desarrollo Ágil**: La flexibilidad de su esquema permite cambios rápidos en la estructura de los datos sin necesidad de grandes migraciones.
+
+### Comparativa: SQL vs NoSQL
+
+| Característica           | SQL (Relacional)                      | NoSQL (MongoDB)                            |
+|--------------------------|---------------------------------------|--------------------------------------------|
+| **Modelo de Datos**      | Tablas y filas                        | Documentos, clave-valor, columnas o grafos |
+| **Esquema**              | Estructura fija (esquema rígido)      | Estructura flexible (esquema dinámico)     |
+| **Escalabilidad**        | Vertical (más potente el hardware)    | Horizontal (más servidores)                |
+| **Transacciones**        | Soporte completo ACID                 | Soporte parcial ACID                       |
+| **Consultas**            | Lenguaje SQL (consultas complejas)    | Consultas flexibles con JSON               |
+| **Casos de Uso**         | Sistemas transaccionales, ERP, CRM    | Big Data, análisis en tiempo
+
+ real, IoT     |
+| **Ejemplos**             | MySQL, PostgreSQL, Oracle             | MongoDB, Cassandra, Couchbase              |
+
+### Resumen de Comandos
+
+1. **Instalar MongoDB y mongosh**:
+
+   ```sh
+   brew tap mongodb/brew
+   brew install mongodb-community
+   brew install mongosh
+   ```
+
+2. **Iniciar MongoDB**:
+
+   ```sh
+   brew services start mongodb/brew/mongodb-community
+   ```
+
+3. **Acceder a MongoDB Shell y Configurar la Base de Datos**:
+
+   ```sh
+   mongosh
+   use asteroidsdb
+   db.createCollection("asteroids")
+   ```
+
+4. **Ejecución de MongoDB en Docker**:
+
+   ```sh
+   docker run -d --name mongodb -p 27017:27017 mongo
+   mongosh "mongodb://localhost:27017"
+   use asteroidsdb
+   ```
+
+### Comandos para Verificar la Base de Datos y Colecciones
+
+1. **Acceder a MongoDB en el contenedor Docker**:
+
+   ```sh
+   docker exec -it mongodb mongosh
+   ```
+
+2. **Mostrar todas las bases de datos**:
+
+   ```sh
+   show dbs
+   ```
+
+3. **Seleccionar la base de datos `asteroidsdb`**:
+
+   ```sh
+   use asteroidsdb
+   ```
+
+4. **Mostrar todas las colecciones en `asteroidsdb`**:
+
+   ```sh
+   show collections
+   ```
+
+5. **Listar documentos en la colección `asteroids`**:
+
+   ```sh
+   db.asteroids.find().pretty()
+   ```
+
+6. **Listar documentos en la colección `users`**:
+
+   ```sh
+   db.users.find().pretty()
+   ```
 
 </details>
 
