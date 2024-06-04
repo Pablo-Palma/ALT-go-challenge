@@ -1,6 +1,38 @@
-# Registro de Asteroides Potencialmente Peligrosos
+# GO APLICATION
 
-La NASA necesita un sistema para registrar y monitorizar asteroides que podrían ser una amenaza para la Tierra. Este proyecto proporciona una API desarrollada en Go que permite gestionar información sobre asteroides, registrar su distancia a la Tierra, y consultar o actualizar dicha información. 
+En este proyecto inspeccionamos el mundo de las aplicaciones web usando el lenguaje de programación Go para desplegar una aplicación que nos permite desplegar una api contenerizada con docker, una aplicaición de código abierto que nos permite automatizar el despligue de aplicaciones dentro de contenedores de software.
+
+Nuestra API almacena los datos tanto de los usuarios como de los objetos en una base de datos NoSQL, en este caso hemos elegido mongodb.
+
+Nuestra api nos proporciona un sistema donde emplear metodos CRUD(Create Research Update Delete)
+* Almacenar información sobre asteroides: incluyendo nombre, tamaño, composición, etc.
+* Registrar la distancia del asteroide a la Tierra en diferentes fechas.
+* Permitir la consulta de información sobre asteroides específicos.
+* Permitir la actualización de la información de un asteroide.
+* Eliminar información de asteroides que ya no son una amenaza.
+
+Como funciones adicionales hemos implementado:
+
+* Paginación y filtros.
+* Sistema de autenticación y autorización para controlar el acceso a la API.
+* Validación de entrada de datos para evitar errores y datos incorrectos.
+* Monitoring: Uso de herramientas de trazas, logging y Monitorizacion de codigos de estado.
+* Documentación: Hemos empleado OpenApi para describir, producir, consumir y visualizar servicios web RESTful.
+* GitHub como repositorio de almacenamiento y control de versiones.
+* Testing: Hemos incluido test unitarios, tanto en go como postman
+* Frontend.
+
+### Tecnologías Utilizadas
+
+- **Lenguaje de Programación**: Go
+- **Contenerización**: Docker
+- **Base de Datos**: MongoDB (NoSQL)
+- **Documentación de API**: OpenAPI
+- **Control de Versiones**: GitHub
+- **Testing**: Go, Postman
+- **Monitoring y Logging**: Prometheus, Grafana
+- **Frontend**: Astro.
+
 
 ## Estructura del Proyecto
 
@@ -26,9 +58,7 @@ La NASA necesita un sistema para registrar y monitorizar asteroides que podrían
 ├── frontend
 │   ├── README.md
 │   ├── node_modules
-│   ├── package.json
-│   ├── astro.config.mjs
-│   ├── package-lock.json
+│   ├── *.json
 │   ├── public
 │   ├── src
 │   │   ├── components
