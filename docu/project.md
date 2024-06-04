@@ -8,11 +8,11 @@ Nuestra API almacena los datos tanto de los usuarios como de los objetos en una 
 
 ### Metodos CRUD(Create, Read, Update, Delete)
 
-* Almacenar información sobre asteroides: incluyendo nombre, tamaño, composición, etc.
-* Registrar la distancia del asteroide a la Tierra en diferentes fechas.
-* Permitir la consulta de información sobre asteroides específicos.
-* Permitir la actualización de la información de un asteroide.
-* Eliminar información de asteroides que ya no son una amenaza.
+* **Almacenar información** sobre asteroides: incluyendo nombre, tamaño, composición, etc.
+* **Registrar la distancia** del asteroide a la Tierra en diferentes fechas.
+* Permitir la **consulta de información** sobre asteroides específicos.
+* Permitir la **actualización de la información** de un asteroide.
+* **Eliminar información** de asteroides que ya no son una amenaza.
 
 ### Funciones adicionales:
 
