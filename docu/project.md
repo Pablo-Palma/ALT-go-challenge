@@ -4,7 +4,7 @@ En este proyecto inspeccionamos el mundo de las aplicaciones web usando el lengu
 
 Nuestra API almacena los datos tanto de los usuarios como de los objetos en una base de datos NoSQL, en este caso hemos elegido mongodb.
 
-Nuestra api nos proporciona un sistema donde emplear metodos CRUD(Create Research Update Delete)
+Nuestra api nos proporciona un sistema donde emplear metodos CRUD(Create, Read, Update, Delete)
 * Almacenar información sobre asteroides: incluyendo nombre, tamaño, composición, etc.
 * Registrar la distancia del asteroide a la Tierra en diferentes fechas.
 * Permitir la consulta de información sobre asteroides específicos.
