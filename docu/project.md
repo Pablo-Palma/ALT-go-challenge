@@ -142,6 +142,18 @@ type Asteroid struct {
 - **ObservationCount**: Número de observaciones del asteroide.
 - **DistanceFromEarth**: Distancia del asteroide a la Tierra.
 
+#### 4. Aprendizajes:
+
+  ```go
+   import "go.mongodb.org/mongo-driver/bson/primitive"
+   ```
+   Esta librería ofrece tipos y funciones necesarios para trabajar con BSON (Binary JSON) en MongoDB. En particular, el tipo `primitive.ObjectID` se utiliza para representar los identificadores únicos (ObjectId) que MongoDB asigna a los documentos. Este tipo permite gestionar estos identificadores de manera adecuada dentro de la aplicación.
+
+2. **¿Qué es esto: `json:"id" bson:"_id,omitempty"`?**
+   Esta etiqueta se utiliza para especificar los nombres de los campos cuando el struct se serializa a JSON o BSON. Aquí está el desglose:
+   - `json:"id"`: Indica que el campo `ID` debe ser serializado/deserializado con el nombre `id` en JSON.
+   - `bson:"_id,omitempty"`: Indica que el campo `ID` debe ser serializado/deserializado con el nombre `_id` en BSON (formato utilizado por MongoDB). El atributo `omitempty` significa que el campo se omitirá en la serialización si está vacío o es su valor cero.
+
 </details>
 
 <details>
