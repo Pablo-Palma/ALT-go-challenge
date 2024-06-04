@@ -1,17 +1,20 @@
 # GO APLICATION
 
-En este proyecto inspeccionamos el mundo de las aplicaciones web usando el lenguaje de programación Go para desplegar una aplicación que nos permite desplegar una api contenerizada con docker, una aplicaición de código abierto que nos permite automatizar el despligue de aplicaciones dentro de contenedores de software.
+Este proyecto creamos una **API RESTful**, un tipo de API que sigue los principios del estilo de arquitectura REST (Representational Sta    te Transfer). REST es una forma de diseñar APIs que utiliza HTTP para realizar operaciones CRUD (Crear, Leer    , Actualizar, Eliminar) sobre los recursos representados en formato JSON o XML.
 
-Nuestra API almacena los datos tanto de los usuarios como de los objetos en una base de datos NoSQL, en este caso hemos elegido mongodb.
+Elegimos GO como  lenguaje de programación  para desplegar una aplicación contenerizada con **docker**, una aplicaición de código abierto que nos permite automatizar el despligue de aplicaciones dentro de contenedores de software.
 
-Nuestra api nos proporciona un sistema donde emplear metodos CRUD(Create, Read, Update, Delete)
+Nuestra API almacena los datos tanto de los usuarios como de los objetos en una base de datos NoSQL, en este caso hemos elegido **mongodb**.
+
+### Metodos CRUD(Create, Read, Update, Delete)
+
 * Almacenar información sobre asteroides: incluyendo nombre, tamaño, composición, etc.
 * Registrar la distancia del asteroide a la Tierra en diferentes fechas.
 * Permitir la consulta de información sobre asteroides específicos.
 * Permitir la actualización de la información de un asteroide.
 * Eliminar información de asteroides que ya no son una amenaza.
 
-Como funciones adicionales hemos implementado:
+### Funciones adicionales:
 
 * Paginación y filtros.
 * Sistema de autenticación y autorización para controlar el acceso a la API.
