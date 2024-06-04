@@ -91,7 +91,7 @@ Como funciones adicionales hemos implementado:
 <details>
 <summary><strong>2. Implementación de la Aplicación en Go</strong></summary>
 
-#### Explicación:
+### 1. Estructura:
 
 - **cmd/main.go**: Contiene el punto de entrada de la aplicación.
 - **internal/asteroid/**: Contiene el código relacionado con los asteroides.
@@ -142,7 +142,7 @@ type Asteroid struct {
 - **ObservationCount**: Número de observaciones del asteroide.
 - **DistanceFromEarth**: Distancia del asteroide a la Tierra.
 
-#### 4. Aprendizajes:
+### 4. Aprendizajes:
 
   ```go
    import "go.mongodb.org/mongo-driver/bson/primitive"
