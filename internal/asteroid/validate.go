@@ -14,6 +14,10 @@ var (
 	ErrInvalidDistance = errors.New("invalid distance")
 )
 
+/*
+	time.Parse(_, date)	Convierte la cadena en un objeto time.Time y verifica la validez de esta.
+*/
+
 func ValidateAsteroid(asteroid *Asteroid) error {
 	if asteroid.Name == "" {
 		return ErrInvalidName

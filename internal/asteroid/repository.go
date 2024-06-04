@@ -19,8 +19,7 @@ import (
 )
 
 /*
-	Declaramos la variable collection de tipo mongo.Collection, una estructura en el paquete "go.mongodb.org/mongo-driver/bson/mongo",
-	que proporciona métodos para realizar operaciones CRUD en esa colección.
+	Declaramos la variable collection de tipo mongo.Collection, una estructura en el paquete "go.mongodb.org/mongo-driver/bson/mongo", donde se almacenan y gestionan datos de los asteroides.
 */
 type Repository struct {
 	collection *mongo.Collection
@@ -28,9 +27,7 @@ type Repository struct {
 
 
 /*
-	Creamos un nuevo repositorio, recibe una base de datos y asigna asteroidsi
-	Devolvemos un puntero al repositorio.
-	Dentro de la funcion asignamos la colección asteroids pasado como parámetro a collection del repositorio.
+	Crea una instancia del repositorio, inicilaizando la coleccion de asteroides en la base de datos proporcionada
 
 */
 func	NewRepository(db *mongo.Database) *Repository {
@@ -42,8 +39,8 @@ func	NewRepository(db *mongo.Database) *Repository {
 /*
 	CREATE
 	Método perteneciente al struct Repository y por tanto con permiso de acceso a sus campos y métodos.
-	Recibe un argumento, asteroid, y generamos un ID uúnico para el asteroide y lo convertimos en cadena.
-	ObjectID es el tipo que usa MongoDB com identificad único, lo convertimo a hexadecimal para hacerlo legible
+	Recibe un argumento, asteroid, y generamos un ID único para el asteroide.
+	ObjectID es el tipo que usa MongoDB com identificad único.
 
 */
 func (r *Repository) Create(asteroid Asteroid) (interface{}, error) {
@@ -152,4 +149,3 @@ func	(r *Repository) Delete(id string) error {
 	}
 	return nil
 }
-
