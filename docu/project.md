@@ -144,6 +144,8 @@ type Asteroid struct {
 
 ### 4. Aprendizajes:
 
+**Serialización:** La serialización es el proceso de convertir una estructura de datos u objeto en un formato que puede ser almacenado (por ejemplo, en un archivo o en una base de datos) o transmitido (por ejemplo, a través de una red) y luego reconstruido más tarde en el mismo o en otro entorno.
+
   ```go
    import "go.mongodb.org/mongo-driver/bson/primitive"
    ```
