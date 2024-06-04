@@ -232,6 +232,13 @@ type Asteroid struct {
 
 ## Documentación Auth
 
+- **Registro**: Genera un hash de la contraseña y almacena el usuario.
+- **Inicio de Sesión**: Verifica las credenciales, genera un JWT y lo almacena en una cookie con duración de 24 horas.
+- **Middleware**: Verifica el token JWT en la cookie o en el encabezado de autorización para proteger los endpoints.
+- **Solicitud con `curl`**: El comando `curl` que proporcionaste utiliza cookies para enviar el token JWT almacenado en `cookies.txt`.
+
+El comando `curl` en tu ejemplo **usa cookies** para la autenticación, ya que incluye la opción `-b cookies.txt` para enviar la cookie con el token JWT almacenado en dicho archivo.
+
 ### Uso de Tokens y Cookies:
 Tu implementación permite el uso de tokens tanto en cookies como en el encabezado de autorización. Aquí está el flujo detallado de cómo funciona:
 
