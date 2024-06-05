@@ -689,7 +689,9 @@ Abre Grafana en tu navegador web en `http://localhost:3000` y accede con las cre
 
 
 </details>
-## ...
+
+## Bonus
+
 <details>
 <summary><strong>7. Paginación y Filtros</strong></summary>
 
@@ -698,48 +700,14 @@ Abre Grafana en tu navegador web en `http://localhost:3000` y accede con las cre
 </details>
 
 <details>
-<summary><strong>8. Caching</strong></summary>
-
-- Mejora de Rendimiento mediante Caché
-
-</details>
-
-<details>
-<summary><strong>9. Frontend</strong></summary>
+<summary><strong>8. Frontend</strong></summary>
 
 - Interfaz Web para Interactuar con la API
 
 </details>
 
 <details>
-<summary><strong>10. Deployment y CI/CD</strong></summary>
-
-- Configuración del Pipeline de CI/CD
-
-</details>
-
-<details>
-<summary><strong>11. Escalabilidad</strong></summary>
-
-- Preparación para Manejar Mayor Carga
-
-</details>
-
-<details>
-<summary><strong>12. Mejoras en la Base de Datos</strong></summary>
-
-- Optimización de la Base de Datos
-
-</details>
-
-<details>
-<summary><strong>13. API Rate Limiting</strong></summary>
-
-- Implementación de Limitación de Tasa para Proteger la API
-
-</details>
-
-<summary><strong>14. Testing</strong></summary>
+<summary><strong>9. Testing</strong></summary>
 
 - Pruebas Unitarias y de Integración
 
