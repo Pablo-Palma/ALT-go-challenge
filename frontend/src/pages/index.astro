@@ -7,18 +7,18 @@ import Button from '../components/Button.astro';
 <Layout title="Welcome to AstreroIds.">
   <main>
     <h1>Welcome to <span class="text-gradient">AsteroIDs</span></h1>
-	<div class="column">
-		<img src="logo-altostratus.svg" width="20%" alt="altostrtus">
-		<img src="nasa-logo.svg"  width="20%"alt="nasa">
-		<img src="world_ch.png"  width="20%"alt="ppr">
-		<img src="42-v2-2.png"  width="20%"alt="42">
-	</div>
+    <div class="column">
+      <img src="logo-altostratus.svg" width="20%" alt="altostrtus">
+      <img src="nasa-logo.svg" width="20%" alt="nasa">
+      <img src="world_ch.png" width="20%" alt="ppr">
+      <img src="42-v2-2.png" width="20%" alt="42">
+    </div>
     <p class="knowledge">
-		La palabra asteroide procede del griego, ἀστεροειδής, y significa «de figura estelar», en referencia al aspecto que presentan cuando son vistos con un telescopio. Fue acuñada por William Herschel en 1802, aunque durante la mayor parte del siglo xix los astrónomos los denominaron planetas.
-	</p>
+      La palabra asteroide procede del griego, ἀστεροειδής, y significa «de figura estelar», en referencia al aspecto que presentan cuando son vistos con un telescopio. Fue acuñada por William Herschel en 1802, aunque durante la mayor parte del siglo xix los astrónomos los denominaron planetas.
+    </p>
     <p class="knowledge">
-		<strong>Asteroids</strong> es una aplicación que te permitirá hacer una expedición por el mundo de los asteroides, explorando sus dimensiones, características y distancias respecto a nuestro planeta.
-	</p>
+      <strong>Asteroids</strong> es una aplicación que te permitirá hacer una expedición por el mundo de los asteroides, explorando sus dimensiones, características y distancias respecto a nuestro planeta.
+    </p>
     <p class="instructions">
       Para explorar los asteroides pulsa el botón <strong>explore</strong>
     </p>
@@ -32,19 +32,9 @@ import Button from '../components/Button.astro';
         body="Aprende sobre la estructura, composicion y utilidades de la aplicaicón"
       />
       <Card
-        href="https://astro.build/integrations/"
-        title="Integrations"
-        body="Supercharge your project with new frameworks and libraries."
-      />
-      <Card
-        href="https://astro.build/themes/"
-        title="Themes"
-        body="Explore a galaxy of community-built starter themes."
-      />
-      <Card
-        href="https://astro.build/chat/"
-        title="Community"
-        body="Come say hi to our amazing Discord community. ❤️"
+        href="https://www.altostratus.es/"
+        title="Altostratus"
+        body="Impulsado por Altostratus"
       />
     </ul>
   </main>
@@ -65,7 +55,7 @@ import Button from '../components/Button.astro';
     position: absolute;
     top: -32px;
     left: 50%;
-    transform: translatex(-50%);
+    transform: translateX(-50%);
     width: 220px;
     height: auto;
     z-index: -1;
@@ -76,7 +66,7 @@ import Button from '../components/Button.astro';
     font-weight: 700;
     line-height: 1;
     text-align: center;
-    margin-bottom: 1em;
+    margin-bottom: 1.5em;
   }
 
   .text-gradient {
@@ -119,11 +109,14 @@ import Button from '../components/Button.astro';
     text-align: center;
     margin: 2rem 0;
   }
+
   .column {
-        display: flex;
-        flex-direction: file;
-        align-items: center;
-        gap: 80px;
-    }
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
 </style>
 
